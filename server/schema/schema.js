@@ -6,6 +6,7 @@ const TechnicalDetails = require('../models/technicaldetails');
 const Message = require('../models/sample-messages');
 const Issues = require('../models/issue-list');
 const Customization = require('../models/customizations');
+//const Mutation = require('./mutations');
 
 const {GraphQLObjectType,
 	GraphQLString,
@@ -21,6 +22,11 @@ const {GraphQLObjectType,
     return this.findOne({ siteId });
   }*/
 
+/*const typeDefs=`
+type Mutation {
+	deleteContact(_id:ID!,input:ContactsInput):Contacts
+}`
+*/
 const CustomizationType = new GraphQLObjectType({
 	name:"Customization",
 	fields:()=>({
@@ -262,6 +268,7 @@ const RootQuery = new GraphQLObjectType({
 	}
 });
 
+
 const Mutation = new GraphQLObjectType({
 	name:'Mutation',
 	fields:{
@@ -462,15 +469,277 @@ const Mutation = new GraphQLObjectType({
 				});
 				return customization.save();
 			}
+		},
+		
+		updateContacts:{
+			type:ContactType,
+			args:{
+				id:{type:GraphQLString},
+				name:{type:GraphQLString},
+				role:{type:GraphQLString},
+				organization:{type:GraphQLString},
+				email:{type:GraphQLString},
+				phone:{type:GraphQLString},
+				remark:{type:GraphQLString},
+				status:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Contacts.findByIdAndUpdate(
+			      args.id,
+			      { $set: { name: args.name,role:args.role,organization:args.organization,email:args.email,phone:args.phone,
+			      remark:args.remark,status:args.status } },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateConnectivity:{
+			type:ConnectivityType,
+			args:{
+				id:{type:GraphQLID},
+				conn_type:{type:GraphQLString},
+				servertype:{type:GraphQLString},
+				system:{type:GraphQLString},
+				interfacetype:{type:GraphQLString},
+				msg_evnt: {type:GraphQLString},
+				interface_dir:{type:GraphQLString},
+				source:{type:GraphQLString},
+				source_ip:{type:GraphQLString},
+				destination:{type:GraphQLString},
+				destination_ip:{type:GraphQLString},
+				port:{type:GraphQLString},
+				AE_title:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				return Connectivity.findByIdAndUpdate(
+			      args.id,
+			      { $set: { conn_type:args.conn_type,
+					servertype:args.servertype,
+					system:args.system,
+					interfacetype:args.interfacetype,
+					msg_evnt:args.msg_evnt,
+					interface_dir:args.interface_dir,
+					source:args.source,
+					source_ip:args.source_ip,
+					destination:args.destination,
+					destination_ip:args.destination_ip,
+					port:args.port,
+					AE_title:args.AE_title } },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			}
+		},
+		updateTechnicalDetails:{
+			type:TechnicalDetailsType,
+			args:{
+				id:{type:GraphQLID},
+				SystemType:{type:GraphQLString},
+				ApplicationRole:{type:GraphQLString},
+				ApplicationName:{type:GraphQLString},
+				Version:{type:GraphQLString},
+				Ip:{type:GraphQLString},
+				HostName:{type:GraphQLString},
+				UserName:{type:GraphQLString},
+				Password:{type:GraphQLString},
+				Remark:{type:GraphQLString}
+				//sid:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return TechnicalDetails.findByIdAndUpdate(
+			      args.id,
+			      { $set: { SystemType:args.SystemType,
+					ApplicationRole:args.ApplicationRole,
+					ApplicationName:args.ApplicationName,
+					Version:args.Version,
+					Ip:args.Ip,
+					HostName:args.HostName,
+					UserName:args.UserName,
+					Password:args.Password,
+					Remark:args.Remark } },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateCustomizations:{
+			type:CustomizationType,
+			args:{
+				id:{type:GraphQLID},
+				description:{type:GraphQLString},
+			    details:{type:GraphQLString},
+			    solution:{type:GraphQLString},
+			    screenshot:{type:GraphQLString},
+			    remark:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Customization.findByIdAndUpdate(
+			      args.id,
+			      { $set: { description:args.description,
+					details:args.details,
+					solution:args.solution,
+					screenshot:args.screenshot,
+					remark:args.remark } },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateIssueList:{
+			type:IssuesType,
+			args:{
+				id:{type:GraphQLID},
+				issue_num:{type:GraphQLInt},
+				status:{type:GraphQLString},
+				logdata:{type:GraphQLString},
+				system:{type:GraphQLString},
+				issue:{type:GraphQLString},
+				status_update:{type:GraphQLString},
+				owner:{type:GraphQLString},
+				case_num:{type:GraphQLString},
+				priority:{type:GraphQLString},
+				resolve_date:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Issues.findByIdAndUpdate(
+			      args.id,
+			      { $set: { issue_num:args.issue_num,
+					status:args.status,
+					logdata:args.logdata,
+					system:args.system,
+					issue:args.issue,
+					status:args.status,
+					owner:args.owner,
+					case_num:args.case_num,
+					priority:args.priority,
+					resolve_date:args.resolve_date } },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateSampleMessages:{
+			type:MessageType,
+			args:{
+				id:{type:GraphQLID},
+				message_type:{type:GraphQLString},
+				message:{type:GraphQLString},
+				source:{type:GraphQLString},
+				from:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Message.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source,
+					from:args.from} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		deleteContact:{
+			type:ContactType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Contacts.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteTecnicalDetails:{
+			type:ContactType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = TechnicalDetails.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteConnectivity:{
+			type:ConnectivityType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Connectivity.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteCustomazitaion:{
+			type:CustomizationType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Customization.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteIssue:{
+			type:IssuesType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Issues.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteMessage:{
+			type:MessageType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Message.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+
 		}
 
 		
-	}
+	
 }) ;
+
+
 
 
 module.exports = new GraphQLSchema({
 
 	query:RootQuery,
 	mutation:Mutation
+	/*mutation: new GraphQLObjectType({
+    name: 'Mutation',
+    fields: Mutation
+  })*/
 });
