@@ -12,7 +12,8 @@ const issueSchema = new Schema({
 	owner:String,
 	case_num:String,
 	priority:String,
-	resolve_date:Date
+	resolve_date:Date,
+	parentId:String
     
 });
 

@@ -22,6 +22,7 @@ exports.ContactType = new GraphQLObjectType({
 		phone:{type:GraphQLString},
 		remark:{type:GraphQLString},
 		status:{type:GraphQLString},
+		parentId:{type:GraphQLID},
 		site:{
 			type:SiteType,
 			resolve(parent,args)

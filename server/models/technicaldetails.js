@@ -11,7 +11,8 @@ const technicalSchema = new Schema({
 	HostName:String,
 	UserName:String,
 	Password:String,
-	Remark:String
+	Remark:String,
+	parentId:String
     
 });
 

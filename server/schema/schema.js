@@ -6,6 +6,8 @@ const TechnicalDetails = require('../models/technicaldetails');
 const Message = require('../models/sample-messages');
 const Issues = require('../models/issue-list');
 const Customization = require('../models/customizations');
+const Testplan = require('../models/testplan_adt');
+const Mappings = require('../models/mappings');
 //const Mutation = require('./mutations');
 
 const {GraphQLObjectType,
@@ -27,6 +29,35 @@ type Mutation {
 	deleteContact(_id:ID!,input:ContactsInput):Contacts
 }`
 */
+const MappingsType= new GraphQLObjectType({
+	name:"Mappings",
+	fields:()=>({
+		id:{type:GraphQLID},
+		sid:{type:GraphQLString},
+		mappings_type:{type:GraphQLString},
+		field1:{type:GraphQLString},
+		field2:{type:GraphQLString},
+		field3:{type:GraphQLString},
+		field4:{type:GraphQLString},
+		parentId:{type:GraphQLString}	
+	})
+});
+
+const TestplanType =new GraphQLObjectType({
+	name:"Testplan",
+	fields:()=>({
+		id:{type:GraphQLID},
+		sid:{type:GraphQLString},
+		test_type:{type:GraphQLString},
+		test:{type:GraphQLString},
+		test_des:{type:GraphQLString},
+		expctd_result:{type:GraphQLString},
+		status:{type:GraphQLString},
+		notes:{type:GraphQLString},
+		parentId:{type:GraphQLString}
+	})
+});
+
 const CustomizationType = new GraphQLObjectType({
 	name:"Customization",
 	fields:()=>({
@@ -36,7 +67,8 @@ const CustomizationType = new GraphQLObjectType({
 	    details:{type:GraphQLString},
 	    solution:{type:GraphQLString},
 	    screenshot:{type:GraphQLString},
-	    remark:{type:GraphQLString}
+	    remark:{type:GraphQLString},
+	    parentId:{type:GraphQLID}
 	})
 });
 
@@ -54,7 +86,8 @@ const IssuesType = new GraphQLObjectType({
 		owner:{type:GraphQLString},
 		case_num:{type:GraphQLString},
 		priority:{type:GraphQLString},
-		resolve_date:{type:GraphQLString}
+		resolve_date:{type:GraphQLString},
+		parentId:{type:GraphQLID}
 	})
 });
 
@@ -66,7 +99,8 @@ const MessageType = new GraphQLObjectType({
 	    message:{type:GraphQLString},
 	    source:{type:GraphQLString},
 	    from:{type:GraphQLString},
-	    sid:{type:GraphQLString}
+	    sid:{type:GraphQLString},
+	    parentId:{type:GraphQLID}
 	})
 });
 const TechnicalDetailsType=new GraphQLObjectType({
@@ -82,7 +116,8 @@ const TechnicalDetailsType=new GraphQLObjectType({
 		UserName:{type:GraphQLString},
 		Password:{type:GraphQLString},
 		Remark:{type:GraphQLString},
-		sid:{type:GraphQLString}
+		sid:{type:GraphQLString},
+		parentId:{type:GraphQLID}
 
 	})
 });
@@ -101,7 +136,10 @@ const ConnectivityType = new GraphQLObjectType({
 		destination:{type:GraphQLString},
 		destination_ip:{type:GraphQLString},
 		port:{type:GraphQLString},
-		AE_title:{type:GraphQLString}
+		AE_title:{type:GraphQLString},
+		parentId:{type:GraphQLID},
+		interface_route:{type:GraphQLString},
+		map_name:{type:GraphQLString}
 	})
 });
 
@@ -116,11 +154,12 @@ const ContactType = new GraphQLObjectType({
 		phone:{type:GraphQLString},
 		remark:{type:GraphQLString},
 		status:{type:GraphQLString},
+		parentId:{type:GraphQLID},
 		site:{
 			type:SiteType,
 			resolve(parent,args)
 			{
-				return Site.findById(parent.siteId);
+				return Site.findById(parent.parentId);
 			}
 		}
 
@@ -142,42 +181,42 @@ const SiteType = new GraphQLObjectType({
 			resolve(parent,args)
 			{
 				console.log(parent);
-				return Contacts.find({sid:parent.sid});
+				return Contacts.find({parentId:parent.id});
 			}
 		},
 		connectivity:{
 			type:new GraphQLList(ConnectivityType),
 			resolve(parent,args)
 			{
-				return Connectivity.find({sid:parent.sid});
+				return Connectivity.find({parentId:parent.id});
 			}
 		},
 		technicaldetails:{
 			type:new GraphQLList(TechnicalDetailsType),
 			resolve(parent,args)
 			{
-				return TechnicalDetails.find({sid:parent.sid});
+				return TechnicalDetails.find({parentId:parent.id});
 			}
 		},
 		samplemsg:{
 			type:new GraphQLList(MessageType),
 			resolve(parent,args)
 			{
-				return Message.find({sid:parent.sid});
+				return Message.find({parentId:parent.id});
 			}
 		},
 		issuelist:{
 			type:new GraphQLList(IssuesType),
 			resolve(parent,args)
 			{
-				return Issues.find({sid:parent.sid});
+				return Issues.find({parentId:parent.id});
 			}
 		},
 		customization:{
 			type:new GraphQLList(CustomizationType),
 			resolve(parent,args)
 			{
-				return Customization.find({sid:parent.sid});
+				return Customization.find({parentId:parent.id});
 			}
 		}
 	})
@@ -188,10 +227,10 @@ const RootQuery = new GraphQLObjectType({
 	fields:{
 		contact:{
 			type:ContactType,
-			args:{sid:{type:GraphQLString}},
+			args:{id:{type:GraphQLID}},
 			resolve(parent,args){
 				console.log(typeof(args.siteId));
-				return Contacts.findBySite(args.sid);
+				return Contacts.findById(args.id);
 			}
 		},
 		site:{
@@ -229,7 +268,7 @@ const RootQuery = new GraphQLObjectType({
 			args:{sid:{type:GraphQLString}},
 			resolve(parent,args)
 			{
-				return Connectivity.findBySite(args.sid);
+				return Connectivity.find({sid:args.sid});
 			}
 		},
 		technicaldetails:{
@@ -237,7 +276,7 @@ const RootQuery = new GraphQLObjectType({
 			args:{sid:{type:GraphQLString}},
 			resolve(parent,args)
 			{
-				return TechnicalDetails.findBySite(args.sid);
+				return TechnicalDetails.find({sid:args.sid});
 			}
 		},
 		samplemsg:{
@@ -245,7 +284,7 @@ const RootQuery = new GraphQLObjectType({
 			args:{sid:{type:GraphQLString}},
 			resolve(parent,args)
 			{
-				return Message.findBySite(args.sid);
+				return Message.find({sid:args.sid});
 			}
 		},
 		issuelist:{
@@ -253,7 +292,7 @@ const RootQuery = new GraphQLObjectType({
 			args:{sid:{type:GraphQLString}},
 			resolve(parent,args)
 			{
-				return Issues.findBySite(args.sid);
+				return Issues.find({sid:args.sid});
 			}
 		},
 		customization:{
@@ -261,7 +300,30 @@ const RootQuery = new GraphQLObjectType({
 			args:{sid:{type:GraphQLString}},
 			resolve(parent,args)
 			{
-				return Customization.findBySite(args.sid);
+				return Customization.find({sid:args.sid});
+			}
+		},
+		testplan:{
+			type:new GraphQLList(TestplanType),
+			args:{test_type:{type:GraphQLString}},
+			resolve(parent,args)
+			{
+				return Testplan.find({test_type:args.test_type});
+			}
+		},
+		testplans:{
+			type:new GraphQLList(TestplanType),
+			resolve(parent,args)
+			{
+				return Testplan.find({});
+			}
+		},
+		mappings:{
+			type:new GraphQLList(MappingsType),
+			args:{mappings_type:{type:GraphQLString}},
+			resolve(parent,args)
+			{
+				return Mappings.find({mappings_type:args.mappings_type});
 			}
 		}
 
@@ -303,7 +365,8 @@ const Mutation = new GraphQLObjectType({
 				phone:{type:GraphQLString},
 				remark:{type:GraphQLString},
 				status:{type:GraphQLString},
-				sid:{type:GraphQLID}
+				sid:{type:GraphQLID},
+				parentId:{type:GraphQLID}
 				
 			},
 			resolve(parent,args)
@@ -316,7 +379,8 @@ const Mutation = new GraphQLObjectType({
 					phone:args.phone,
 					remark:args.remark,
 					status:args.status,
-					sid:args.sid
+					sid:args.sid,
+					parentId:args.parentId
 				});
 				return contacts.save();
 			}
@@ -336,7 +400,10 @@ const Mutation = new GraphQLObjectType({
 				destination:{type:GraphQLString},
 				destination_ip:{type:GraphQLString},
 				port:{type:GraphQLString},
-				AE_title:{type:GraphQLString}
+				AE_title:{type:GraphQLString},
+				parentId:{type:GraphQLID},
+				interface_route:{type:GraphQLString},
+				map_name:{type:GraphQLString}
 			},
 			resolve(parent,args)
 			{
@@ -353,7 +420,10 @@ const Mutation = new GraphQLObjectType({
 					destination:args.destination,
 					destination_ip:args.destination_ip,
 					port:args.port,
-					AE_title:args.AE_title
+					AE_title:args.AE_title,
+					parentId:args.parentId,
+					interface_route:args.interface_route,
+					map_name:args.map_name
 				});
 				return connectivity.save();
 			}
@@ -370,7 +440,8 @@ const Mutation = new GraphQLObjectType({
 				HostName:{type:GraphQLString},
 				UserName:{type:GraphQLString},
 				Password:{type:GraphQLString},
-				Remark:{type:GraphQLString}
+				Remark:{type:GraphQLString},
+				parentId:{type:GraphQLID}
 				
 			},
 			resolve(parent,args)
@@ -397,7 +468,8 @@ const Mutation = new GraphQLObjectType({
 				message_type:{type:GraphQLString},
 				message:{type:GraphQLString},
 				source:{type:GraphQLString},
-				from:{type:GraphQLString}
+				from:{type:GraphQLString},
+				parentId:{type:GraphQLID}
 			},
 			resolve(parent,args)
 			{
@@ -424,7 +496,8 @@ const Mutation = new GraphQLObjectType({
 				owner:{type:GraphQLString},
 				case_num:{type:GraphQLString},
 				priority:{type:GraphQLString},
-				resolve_date:{type:GraphQLString}
+				resolve_date:{type:GraphQLString},
+				parentId:{type:GraphQLID}
 
 			},
 			resolve(parent,args)
@@ -454,7 +527,8 @@ const Mutation = new GraphQLObjectType({
 			    details:{type:GraphQLString},
 			    solution:{type:GraphQLString},
 			    screenshot:{type:GraphQLString},
-			    remark:{type:GraphQLString}
+			    remark:{type:GraphQLString},
+			    parentId:{type:GraphQLID}
 
 			},
 			resolve(parent,args)
@@ -468,6 +542,60 @@ const Mutation = new GraphQLObjectType({
 					remark:args.remark
 				});
 				return customization.save();
+			}
+		},
+
+		addTestplan:{
+			type:TestplanType,
+			args:{
+				sid:{type:GraphQLString},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let testplan = new Testplan({
+					sid:args.sid,
+					test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes,
+					parentId:args.parentId
+				});
+				return testplan.save();
+			}
+		},
+
+		addMappings:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Mappings({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
 			}
 		},
 		

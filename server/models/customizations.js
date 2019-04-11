@@ -7,7 +7,8 @@ const custamizationSchema = new Schema({
     details:String,
     solution:String,
     screenshot:String,
-    remark:String
+    remark:String,
+    parentId:String
 });
 
 module.exports = mongoose.model('Custamization', custamizationSchema);

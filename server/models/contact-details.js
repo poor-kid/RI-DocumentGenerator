@@ -9,7 +9,8 @@ const contactsSchema = new Schema({
     email: String,
     phone: String,
     remark:String,
-    status:String
+    status:String,
+    parentId:String
 });
 
 module.exports = mongoose.model('Contacts', contactsSchema);

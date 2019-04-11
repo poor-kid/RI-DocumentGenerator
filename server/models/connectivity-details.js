@@ -14,7 +14,10 @@ const connectivitySchema = new Schema({
 	destination:String,
 	destination_ip:String,
 	port:String,
-	AE_title:String
+	AE_title:String,
+	parentId:String,
+	interface_route:String,
+	map_name:String
 });
 
 module.exports = mongoose.model('Connectivity', connectivitySchema);
