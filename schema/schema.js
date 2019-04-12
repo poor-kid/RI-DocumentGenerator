@@ -54,7 +54,18 @@ const TestplanType =new GraphQLObjectType({
 		expctd_result:{type:GraphQLString},
 		status:{type:GraphQLString},
 		notes:{type:GraphQLString},
-		parentId:{type:GraphQLString}
+		parentId:{type:GraphQLString},
+		testplan_type:{
+			type:new GraphQLList(TestplanType),
+			args:{
+				test_type:{type:GraphQLString},
+				//parentId:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Testplan.find({test_type: parent.test_type});
+			}
+		}
 	})
 });
 
@@ -218,6 +229,14 @@ const SiteType = new GraphQLObjectType({
 			{
 				return Customization.find({parentId:parent.id});
 			}
+		},
+		testplan:{
+			type: new GraphQLList(TestplanType),
+			resolve(parent,args)
+			{
+				console.log(parent.id);
+				return Testplan.find({parentId:parent.id});
+			}
 		}
 	})
 });
@@ -241,7 +260,7 @@ const RootQuery = new GraphQLObjectType({
 				//$d = args.id;
 				console.log(typeof(args.sid));
 				//console.log(findBySiteId(args.sid));
-				return Site.findBySite(args.sid);
+				return Site.find({sid:args.sid});
 			}
 		},
 		sites:{
@@ -763,6 +782,31 @@ const Mutation = new GraphQLObjectType({
 					message:args.message,
 					source:args.source,
 					from:args.from} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+			updateTestplan:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLID},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Testplan.findByIdAndUpdate(
+			      args.id,
+			      { $set: { test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
