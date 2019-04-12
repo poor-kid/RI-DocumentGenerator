@@ -1,0 +1,17 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const contactsSchema = new Schema({
+	sid:String,
+    name:String,
+    role:String,
+    organization:String,
+    email: String,
+    phone: String,
+    remark:String,
+    status:String,
+    parentId:String
+});
+
+module.exports = mongoose.model('Contacts', contactsSchema);
+
