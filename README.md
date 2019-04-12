@@ -33,7 +33,6 @@
 [View Latest Release](http://dc-ri.herokuapp.com/graphql)
 
 ## Dependencies
-<a href="https://requires.io/github/poor-kid/RI-DocumentGenerator/requirements/?branch=master"><img src="https://requires.io/github/poor-kid/RI-DocumentGenerator/requirements.svg?branch=master" alt="Requirements Status" /></a>
 
 * [Node](https://nodejs.org/en/)
 * [Nodemon](https://nodemon.io/) (Optional, but recommended)
