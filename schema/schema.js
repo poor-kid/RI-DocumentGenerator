@@ -191,43 +191,43 @@ const SiteType = new GraphQLObjectType({
 			type:new GraphQLList(ContactType),
 			resolve(parent,args)
 			{
-				console.log(parent);
-				return Contacts.find({parentId:parent.id});
+				console.log(parent[0]._id);
+				return Contacts.find({parentId:parent[0]._id});
 			}
 		},
 		connectivity:{
 			type:new GraphQLList(ConnectivityType),
 			resolve(parent,args)
 			{
-				return Connectivity.find({parentId:parent.id});
+				return Connectivity.find({parentId:parent[0]._id});
 			}
 		},
 		technicaldetails:{
 			type:new GraphQLList(TechnicalDetailsType),
 			resolve(parent,args)
 			{
-				return TechnicalDetails.find({parentId:parent.id});
+				return TechnicalDetails.find({parentId:parent[0]._id});
 			}
 		},
 		samplemsg:{
 			type:new GraphQLList(MessageType),
 			resolve(parent,args)
 			{
-				return Message.find({parentId:parent.id});
+				return Message.find({parentId:parent[0]._id});
 			}
 		},
 		issuelist:{
 			type:new GraphQLList(IssuesType),
 			resolve(parent,args)
 			{
-				return Issues.find({parentId:parent.id});
+				return Issues.find({parentId:parent[0]._id});
 			}
 		},
 		customization:{
 			type:new GraphQLList(CustomizationType),
 			resolve(parent,args)
 			{
-				return Customization.find({parentId:parent.id});
+				return Customization.find({parentId:parent[0]._id});
 			}
 		},
 		testplan:{
@@ -235,7 +235,7 @@ const SiteType = new GraphQLObjectType({
 			resolve(parent,args)
 			{
 				console.log(parent.id);
-				return Testplan.find({parentId:parent.id});
+				return Testplan.find({parentId:parent[0]._id});
 			}
 		}
 	})
