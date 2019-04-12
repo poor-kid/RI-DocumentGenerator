@@ -55,7 +55,7 @@ const TestplanType =new GraphQLObjectType({
 		status:{type:GraphQLString},
 		notes:{type:GraphQLString},
 		parentId:{type:GraphQLString},
-		testplan_type:{
+		/*testplan_type:{
 			type:new GraphQLList(TestplanType),
 			args:{
 				test_type:{type:GraphQLString},
@@ -63,9 +63,10 @@ const TestplanType =new GraphQLObjectType({
 			},
 			resolve(parent,args)
 			{
-				return Testplan.find({test_type: parent.test_type});
+				console.log(parent.test_type);
+				return Testplan.filter(args.test_type);
 			}
-		}
+		}*/
 	})
 });
 
@@ -232,10 +233,19 @@ const SiteType = new GraphQLObjectType({
 		},
 		testplan:{
 			type: new GraphQLList(TestplanType),
+			//args:{test_type:{type:GraphQLString}},
 			resolve(parent,args)
 			{
-				console.log(parent.id);
+				console.log("in testplan"+parent[0]._id);
+				//console.log(Testplan.find({where :{and :[{parentId:parent[0]._id},{test_type:args.test_type}]}}));
 				return Testplan.find({parentId:parent[0]._id});
+			}
+		},
+		mappings:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Mappings.find({parentId:parent[0]._id});
 			}
 		}
 	})
@@ -378,8 +388,8 @@ const Mutation = new GraphQLObjectType({
 			type:ContactType,
 			args:{
 				name:{type:new GraphQLNonNull(GraphQLString)},
-				role:{type:new GraphQLNonNull(GraphQLString)},
-				organization:{type:new GraphQLNonNull(GraphQLString)},
+				role:{type:GraphQLString},
+				organization:{type:GraphQLString},
 				email:{type:GraphQLString},
 				phone:{type:GraphQLString},
 				remark:{type:GraphQLString},
@@ -890,6 +900,34 @@ const Mutation = new GraphQLObjectType({
 			resolve(parent,args)
 			{
 				const removeduser = Message.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteTestplan:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Testplan.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteMappings:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Mappings.findByIdAndRemove(args.id).exec();
 				    if (!removeduser) {
 				      throw new Error('Error')
 				    	}
