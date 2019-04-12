@@ -16,8 +16,15 @@ app.use(cors());
 
 
 
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/RIDC',{useNewUrlParser: true })
+//mongoose.Promise = global.Promise;
+//mongoose.connect('mongodb://localhost:27017/RIDC',{useNewUrlParser: true })
+//mongoose.connect('mongodb+srv://Dileep:dileep768@graphql-learning-swelr.mongodb.net/RIDB?retryWrites=true',{useNewUrlParser:true});
+
+
+mongoose.connect('mongodb+srv://Dileep:dileep768@graphql-learning-swelr.mongodb.net/RIDB?retryWrites=true', {
+             useNewUrlParser: true
+});
+
 
 mongoose.connection.once('open',() => {
 	console.log('connected established');
