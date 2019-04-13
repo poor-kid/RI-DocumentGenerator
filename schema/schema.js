@@ -485,7 +485,8 @@ const Mutation = new GraphQLObjectType({
 					HostName:args.HostName,
 					UserName:args.UserName,
 					Password:args.Password,
-					Remark:args.Remark
+					Remark:args.Remark,
+					parentId:args.parentId
 				});
 				return tech.save();
 			}
