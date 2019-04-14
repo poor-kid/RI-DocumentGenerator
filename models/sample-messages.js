@@ -6,7 +6,6 @@ const messageSchema = new Schema({
     message_type:String,
     message:String,
     source:String,
-    from:String,
     parentId:String
 
 });

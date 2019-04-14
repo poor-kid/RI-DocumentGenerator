@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const issueSchema = new Schema({
 	sid:String,
-	issue_num:Number,
+	issue_num:String,
 	status:String,
 	logdata:String,
 	system:String,

@@ -89,7 +89,7 @@ const IssuesType = new GraphQLObjectType({
 	fields:()=>({
 		id:{type:GraphQLID},
 		sid:{type:GraphQLString},
-		issue_num:{type:GraphQLInt},
+		issue_num:{type:GraphQLString},
 		status:{type:GraphQLString},
 		logdata:{type:GraphQLString},
 		system:{type:GraphQLString},
@@ -515,7 +515,7 @@ const Mutation = new GraphQLObjectType({
 			type:IssuesType,
 			args:{
 				sid:{type:GraphQLString},
-				issue_num:{type:GraphQLInt},
+				issue_num:{type:GraphQLString},
 				status:{type:GraphQLString},
 				logdata:{type:GraphQLString},
 				system:{type:GraphQLString},
@@ -748,7 +748,7 @@ const Mutation = new GraphQLObjectType({
 			type:IssuesType,
 			args:{
 				id:{type:GraphQLID},
-				issue_num:{type:GraphQLInt},
+				issue_num:{type:GraphQLString},
 				status:{type:GraphQLString},
 				logdata:{type:GraphQLString},
 				system:{type:GraphQLString},
