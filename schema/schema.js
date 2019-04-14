@@ -110,7 +110,6 @@ const MessageType = new GraphQLObjectType({
 		message_type:{type:GraphQLString},
 	    message:{type:GraphQLString},
 	    source:{type:GraphQLString},
-	    from:{type:GraphQLString},
 	    sid:{type:GraphQLString},
 	    parentId:{type:GraphQLID}
 	})
@@ -498,7 +497,6 @@ const Mutation = new GraphQLObjectType({
 				message_type:{type:GraphQLString},
 				message:{type:GraphQLString},
 				source:{type:GraphQLString},
-				from:{type:GraphQLString},
 				parentId:{type:GraphQLID}
 			},
 			resolve(parent,args)
@@ -508,7 +506,7 @@ const Mutation = new GraphQLObjectType({
 					message_type:args.message_type,
 					message:args.message,
 					source:args.source,
-					from:args.from
+					parentId:args.parentId
 				});
 				return msg.save();
 			}
@@ -543,7 +541,8 @@ const Mutation = new GraphQLObjectType({
 					owner:args.owner,
 					case_num:args.case_num,
 					priority:args.priority,
-					resolve_date:args.resolve_date
+					resolve_date:args.resolve_date,
+					parentId:args.parentId
 
 				});
 				return issue.save();
@@ -569,7 +568,8 @@ const Mutation = new GraphQLObjectType({
 					details:args.details,
 					solution:args.solution,
 					screenshot:args.screenshot,
-					remark:args.remark
+					remark:args.remark,
+					parentId:args.parentId
 				});
 				return customization.save();
 			}
@@ -783,16 +783,14 @@ const Mutation = new GraphQLObjectType({
 				id:{type:GraphQLID},
 				message_type:{type:GraphQLString},
 				message:{type:GraphQLString},
-				source:{type:GraphQLString},
-				from:{type:GraphQLString}
+				source:{type:GraphQLString}
 			},
 			resolve(parent, args) {
 			    return Message.findByIdAndUpdate(
 			      args.id,
 			      { $set: { message_type:args.message_type,
 					message:args.message,
-					source:args.source,
-					from:args.from} },
+					source:args.source} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
