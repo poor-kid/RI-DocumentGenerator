@@ -1263,7 +1263,9 @@ const Mutation = new GraphQLObjectType({
 					owner:args.owner,
 					case_num:args.case_num,
 					priority:args.priority,
-					resolve_date:args.resolve_date } },
+					resolve_date:args.resolve_date,
+					status_update:args.status_update
+					 } },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
