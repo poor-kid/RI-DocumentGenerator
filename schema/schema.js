@@ -6,8 +6,22 @@ const TechnicalDetails = require('../models/technicaldetails');
 const Message = require('../models/sample-messages');
 const Issues = require('../models/issue-list');
 const Customization = require('../models/customizations');
-const Testplan = require('../models/testplan_adt');
-const Mappings = require('../models/mappings');
+const Testplan_ADT = require('../models/testplan/testplan_adt');
+const Mappings = require('../models/mappings/mappings');
+const Mappings_ADT = require('../models/mappings/mappings_adt');
+const Mappings_ORM = require('../models/mappings/mappings_orm');
+const Mappings_ORU = require('../models/mappings/mappings_oru');
+const Autocreate = require('../models/mappings/autocreate');
+const Mappings_IAN = require('../models/mappings/ian');
+const Dmwl_Inbound = require('../models/mappings/dmwl_inbound');
+const Dmwl_Outbound = require('../models/mappings/dmwl_outbound');
+const Mappings_Tables = require('../models/mappings/tables_in_use');
+const Mappings_Pics = require('../models/mappings/pics');
+const Testplan_ORDER = require('../models/testplan/order_entry');
+const Testplan_DMWL = require('../models/testplan/dmwl');
+const Testplan_DICOM = require('../models/testplan/dicom');
+const Testplan_Autocreate = require('../models/testplan/autocreate');
+const Testplan_Validation = require('../models/testplan/validation');
 //const Mutation = require('./mutations');
 
 const {GraphQLObjectType,
@@ -29,6 +43,7 @@ type Mutation {
 	deleteContact(_id:ID!,input:ContactsInput):Contacts
 }`
 */
+
 const MappingsType= new GraphQLObjectType({
 	name:"Mappings",
 	fields:()=>({
@@ -39,7 +54,9 @@ const MappingsType= new GraphQLObjectType({
 		field2:{type:GraphQLString},
 		field3:{type:GraphQLString},
 		field4:{type:GraphQLString},
-		parentId:{type:GraphQLString}	
+		parentId:{type:GraphQLString},
+	//	contains:{type:GraphQLString}
+		//searchField:{type:StringFilterInput}	
 	})
 });
 
@@ -230,25 +247,126 @@ const SiteType = new GraphQLObjectType({
 				return Customization.find({parentId:parent[0]._id});
 			}
 		},
-		testplan:{
+		testplan_adt:{
 			type: new GraphQLList(TestplanType),
 			//args:{test_type:{type:GraphQLString}},
 			resolve(parent,args)
 			{
 				console.log("in testplan"+parent[0]._id);
 				//console.log(Testplan.find({where :{and :[{parentId:parent[0]._id},{test_type:args.test_type}]}}));
-				return Testplan.find({parentId:parent[0]._id});
+				return Testplan_ADT.find({parentId:parent[0]._id});
+			}
+		},
+		testplan_order:{
+			type: new GraphQLList(TestplanType),
+			resolve(parent,args)
+			{
+				return Testplan_ORDER.find({parentId:parent[0]._id});
+			}
+		},
+		testplan_dmwl:{
+			type: new GraphQLList(TestplanType),
+			resolve(parent,args)
+			{
+				return Testplan_DMWL.find({parentId:parent[0]._id});
+			}
+		},
+		testplan_dicom:{
+			type: new GraphQLList(TestplanType),
+			resolve(parent,args)
+			{
+				return Testplan_DICOM.find({parentId:parent[0]._id});
+			}
+		},
+		testplan_autocreate:{
+			type: new GraphQLList(TestplanType),
+			resolve(parent,args)
+			{
+				return Testplan_Autocreate.find({parentId:parent[0]._id});
+			}
+		},
+		testplan_validation:{
+			type: new GraphQLList(TestplanType),
+			resolve(parent,args)
+			{
+				return Testplan_Validation.find({parentId:parent[0]._id});
 			}
 		},
 		mappings:{
 			type: new GraphQLList(MappingsType),
+			//args:{mappings_type:{type:GraphQLString}},
 			resolve(parent,args)
 			{
+				//console.log(Mappings.find({where:{and :[{parentId:parent[0]._id},{mappings_type:args.mappings_type}]}}));
 				return Mappings.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_adt:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Mappings_ADT.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_orm:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Mappings_ORM.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_oru:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Mappings_ORU.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_autocreate:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Autocreate.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_ian:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Mappings_ADT.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_dmwlinbound:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Dmwl_Inbound.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_dmwloutbound:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Dmwl_Outbound.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_tables:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Mappings_Tables.find({parentId:parent[0]._id});
+			}
+		},
+		mappings_pics:{
+			type: new GraphQLList(MappingsType),
+			resolve(parent,args)
+			{
+				return Mappings_Pics.find({parentId:parent[0]._id});
 			}
 		}
 	})
 });
+
 
 const RootQuery = new GraphQLObjectType({
 	name:'RootQueryType',
@@ -352,6 +470,14 @@ const RootQuery = new GraphQLObjectType({
 			resolve(parent,args)
 			{
 				return Mappings.find({mappings_type:args.mappings_type});
+			}
+		},
+		mappings_adt:{
+			type:new GraphQLList(MappingsType),
+			args:{mappings_type:{type:GraphQLString}},
+			resolve(parent,args)
+			{
+				return Mappings_ADT.find({mappings_type:args.mappings_type});
 			}
 		}
 
@@ -575,7 +701,7 @@ const Mutation = new GraphQLObjectType({
 			}
 		},
 
-		addTestplan:{
+		addTestplan_Adt:{
 			type:TestplanType,
 			args:{
 				sid:{type:GraphQLString},
@@ -589,7 +715,142 @@ const Mutation = new GraphQLObjectType({
 			},
 			resolve(parent,args)
 			{
-				let testplan = new Testplan({
+				let testplan = new Testplan_ADT({
+					sid:args.sid,
+					test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes,
+					parentId:args.parentId
+				});
+				return testplan.save();
+			}
+		},
+		addTestplan_order:{
+			type:TestplanType,
+			args:{
+				sid:{type:GraphQLString},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let testplan = new Testplan_ORDER({
+					sid:args.sid,
+					test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes,
+					parentId:args.parentId
+				});
+				return testplan.save();
+			}
+		},
+		addTestplan_dmwl:{
+			type:TestplanType,
+			args:{
+				sid:{type:GraphQLString},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let testplan = new Testplan_DMWL({
+					sid:args.sid,
+					test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes,
+					parentId:args.parentId
+				});
+				return testplan.save();
+			}
+		},
+		addTestplan_dicom:{
+			type:TestplanType,
+			args:{
+				sid:{type:GraphQLString},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let testplan = new Testplan_DICOM({
+					sid:args.sid,
+					test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes,
+					parentId:args.parentId
+				});
+				return testplan.save();
+			}
+		},
+		addTestplan_autocreate:{
+			type:TestplanType,
+			args:{
+				sid:{type:GraphQLString},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let testplan = new Testplan_Autocreate({
+					sid:args.sid,
+					test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes,
+					parentId:args.parentId
+				});
+				return testplan.save();
+			}
+		},
+		addTestplan_validation:{
+			type:TestplanType,
+			args:{
+				sid:{type:GraphQLString},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let testplan = new Testplan_Validation({
 					sid:args.sid,
 					test_type:args.test_type,
 					test:args.test,
@@ -617,6 +878,231 @@ const Mutation = new GraphQLObjectType({
 			resolve(parent,args)
 			{
 				let mappings = new Mappings({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_adt:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Mappings_ADT({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_orm:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Mappings_ORM({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_oru:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Mappings_ORU({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_autocreate:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Autocreate({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_ian:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Mappings_IAN({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_dmwlinbound:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Dmwl_Inbound({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_dmwloutbound:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Dmwl_Outbound({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_tables:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Mappings_Tables({
+					sid:args.sid,
+					mappings_type:args.mappings_type,
+					field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4,
+					parentId:args.parentId
+				});
+				return mappings.save();
+			}
+		},
+		addMappings_pics:{
+			type:MappingsType,
+			args:{
+				sid:{type:GraphQLString},
+				mappings_type:{type:GraphQLString},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+				parentId:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				let mappings = new Mappings_Pics({
 					sid:args.sid,
 					mappings_type:args.mappings_type,
 					field1:args.field1,
