@@ -668,7 +668,8 @@ const Mutation = new GraphQLObjectType({
 					case_num:args.case_num,
 					priority:args.priority,
 					resolve_date:args.resolve_date,
-					parentId:args.parentId
+					parentId:args.parentId,
+					status_update:args.status_update
 
 				});
 				return issue.save();
