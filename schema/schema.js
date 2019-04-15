@@ -1152,7 +1152,9 @@ const Mutation = new GraphQLObjectType({
 				destination:{type:GraphQLString},
 				destination_ip:{type:GraphQLString},
 				port:{type:GraphQLString},
-				AE_title:{type:GraphQLString}
+				AE_title:{type:GraphQLString},
+				interface_route:{type:GraphQLString},
+				map_name:{type:GraphQLString}
 			},
 			resolve(parent,args)
 			{
@@ -1169,7 +1171,10 @@ const Mutation = new GraphQLObjectType({
 					destination:args.destination,
 					destination_ip:args.destination_ip,
 					port:args.port,
-					AE_title:args.AE_title } },
+					AE_title:args.AE_title,
+					interface_route:args.interface_route,
+					map_name:args.map_name
+				} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1321,7 +1326,7 @@ const Mutation = new GraphQLObjectType({
 				    return removeduser;
   				}
 			},
-		deleteTecnicalDetails:{
+		deleteTechnicalDetails:{
 			type:ContactType,
 			args:{
 				id:{type:GraphQLString}
