@@ -1290,7 +1290,7 @@ const Mutation = new GraphQLObjectType({
 			      .catch(err => new Error(err));
 			  }
 			},
-			updateTestplan:{
+			updateTestplan_Adt:{
 			type:TestplanType,
 			args:{
 				id:{type:GraphQLID},
@@ -1302,7 +1302,132 @@ const Mutation = new GraphQLObjectType({
 				notes:{type:GraphQLString}
 			},
 			resolve(parent, args) {
-			    return Testplan.findByIdAndUpdate(
+			    return Testplan_ADT.findByIdAndUpdate(
+			      args.id,
+			      { $set: { test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateTestplan_order:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLID},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Testplan_ORDER.findByIdAndUpdate(
+			      args.id,
+			      { $set: { test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateTestplan_dmwl:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLID},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Testplan_DMWL.findByIdAndUpdate(
+			      args.id,
+			      { $set: { test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateTestplan_dicom:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLID},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Testplan_DICOM.findByIdAndUpdate(
+			      args.id,
+			      { $set: { test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateTestplan_autocreate:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLID},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Testplan_Autocreate.findByIdAndUpdate(
+			      args.id,
+			      { $set: { test_type:args.test_type,
+					test:args.test,
+					test_des:args.test_des,
+					expctd_result:args.expctd_result,
+					status:args.expctd_result,
+					notes:args.notes} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateTestplan_validation:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLID},
+				test_type:{type:GraphQLString},
+				test:{type:GraphQLString},
+				test_des:{type:GraphQLString},
+				expctd_result:{type:GraphQLString},
+				status:{type:GraphQLString},
+				notes:{type:GraphQLString}
+			},
+			resolve(parent, args) {
+			    return Testplan_Validation.findByIdAndUpdate(
 			      args.id,
 			      { $set: { test_type:args.test_type,
 					test:args.test,
@@ -1399,14 +1524,84 @@ const Mutation = new GraphQLObjectType({
 				    return removeduser;
   				}
 			},
-		deleteTestplan:{
+		deleteTestplan_Adt:{
 			type:TestplanType,
 			args:{
 				id:{type:GraphQLString}
 			},
 			resolve(parent,args)
 			{
-				const removeduser = Testplan.findByIdAndRemove(args.id).exec();
+				const removeduser = Testplan_ADT.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteTestplan_order:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Testplan_ORDER.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteTestplan_dmwl:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Testplan_DMWL.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteTestplan_dicom:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Testplan_DICOM.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteTestplan_autocreate:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Testplan_Autocreate.findByIdAndRemove(args.id).exec();
+				    if (!removeduser) {
+				      throw new Error('Error')
+				    	}
+				    return removeduser;
+  				}
+			},
+		deleteTestplan_validation:{
+			type:TestplanType,
+			args:{
+				id:{type:GraphQLString}
+			},
+			resolve(parent,args)
+			{
+				const removeduser = Testplan_Validation.findByIdAndRemove(args.id).exec();
 				    if (!removeduser) {
 				      throw new Error('Error')
 				    	}
