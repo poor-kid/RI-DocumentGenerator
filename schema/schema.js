@@ -1308,7 +1308,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes} },
 			      { new: true }
 			    )
@@ -1333,7 +1333,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes} },
 			      { new: true }
 			    )
@@ -1358,7 +1358,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes} },
 			      { new: true }
 			    )
@@ -1383,7 +1383,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes} },
 			      { new: true }
 			    )
@@ -1408,7 +1408,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes} },
 			      { new: true }
 			    )
@@ -1433,7 +1433,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes} },
 			      { new: true }
 			    )
