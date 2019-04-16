@@ -197,7 +197,6 @@ const ContactType = new GraphQLObjectType({
 const SiteType = new GraphQLObjectType({
 	name:'Site',
 	fields:()=>({
-
 		id:{type:GraphQLID},
 		sid:{type:GraphQLString},
 		name:{type:GraphQLString},
@@ -364,6 +363,8 @@ const SiteType = new GraphQLObjectType({
 				return Mappings_Pics.find({parentId:parent[0]._id});
 			}
 		}
+
+		
 	})
 });
 
@@ -385,8 +386,8 @@ const RootQuery = new GraphQLObjectType({
 			resolve(parent,args)
 			{
 				//$d = args.id;
-				console.log(typeof(args.sid));
-				//console.log(findBySiteId(args.sid));
+				console.log(args.sid);
+				//console.log(Site.find({sid:args.sid}));
 				return Site.find({sid:args.sid});
 			}
 		},
@@ -865,7 +866,7 @@ const Mutation = new GraphQLObjectType({
 			}
 		},
 
-		addMappings:{
+		addMappings_reg:{
 			type:MappingsType,
 			args:{
 				sid:{type:GraphQLString},
@@ -1290,6 +1291,222 @@ const Mutation = new GraphQLObjectType({
 			      .catch(err => new Error(err));
 			  }
 			},
+
+
+			updateMappings_reg:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Mappings.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+		updateMappings_adt:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Mappings_ADT.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			}
+		},
+		updateMappings_orm:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Mappings_ORM.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+			},
+		updateMappings_oru:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Mappings_ORU.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+		updateMappings_autocreate:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Autocreate.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+		updateMappings_ian:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Mappings_IAN.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+		updateMappings_dmwlinbound:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Dmwl_Inbound.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+		updateMappings_dmwloutbound:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Dmwl_Outbound.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+		updateMappings_tables:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Mappings_Tables.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+		updateMappings_pics:{
+			type:MappingsType,
+			args:{
+				id:{type:GraphQLID},
+				field1:{type:GraphQLString},
+				field2:{type:GraphQLString},
+				field3:{type:GraphQLString},
+				field4:{type:GraphQLString},
+			},
+			resolve(parent,args)
+			{
+				return Mappings_Pics.findByIdAndUpdate(
+			      args.id,
+			      { $set: { message_type:args.message_type,
+					message:args.message,
+					source:args.source} },
+			      { new: true }
+			    )
+			      .catch(err => new Error(err));
+			  }
+		},
+
+
+
 			updateTestplan_Adt:{
 			type:TestplanType,
 			args:{
@@ -1608,20 +1825,7 @@ const Mutation = new GraphQLObjectType({
 				    return removeduser;
   				}
 			},
-		deleteMappings:{
-			type:MappingsType,
-			args:{
-				id:{type:GraphQLString}
-			},
-			resolve(parent,args)
-			{
-				const removeduser = Mappings.findByIdAndRemove(args.id).exec();
-				    if (!removeduser) {
-				      throw new Error('Error')
-				    	}
-				    return removeduser;
-  				}
-			},
+		
 
 		}
 
