@@ -1624,9 +1624,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Mappings.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1645,9 +1646,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Mappings_ADT.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1666,9 +1668,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Mappings_ORM.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1687,9 +1690,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Mappings_ORU.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1708,9 +1712,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Autocreate.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1729,9 +1734,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Mappings_IAN.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1750,9 +1756,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Dmwl_Inbound.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1771,9 +1778,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Dmwl_Outbound.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1792,9 +1800,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Mappings_Tables.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
@@ -1813,9 +1822,10 @@ const Mutation = new GraphQLObjectType({
 			{
 				return Mappings_Pics.findByIdAndUpdate(
 			      args.id,
-			      { $set: { message_type:args.message_type,
-					message:args.message,
-					source:args.source} },
+			      { $set: { field1:args.field1,
+					field2:args.field2,
+					field3:args.field3,
+					field4:args.field4} },
 			      { new: true }
 			    )
 			      .catch(err => new Error(err));
