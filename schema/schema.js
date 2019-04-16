@@ -722,7 +722,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes,
 					parentId:args.parentId
 				});
@@ -749,7 +749,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes,
 					parentId:args.parentId
 				});
@@ -776,7 +776,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes,
 					parentId:args.parentId
 				});
@@ -803,7 +803,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes,
 					parentId:args.parentId
 				});
@@ -830,7 +830,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes,
 					parentId:args.parentId
 				});
@@ -857,7 +857,7 @@ const Mutation = new GraphQLObjectType({
 					test:args.test,
 					test_des:args.test_des,
 					expctd_result:args.expctd_result,
-					status:args.expctd_result,
+					status:args.status,
 					notes:args.notes,
 					parentId:args.parentId
 				});
